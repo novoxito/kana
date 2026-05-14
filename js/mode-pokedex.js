@@ -49,7 +49,19 @@ export function mount(container) {
       }
     }
 
-    const answerTokens = tokenize(p.jp || '');
+    // Defensive: if the Japanese name is empty (stale/corrupt cache), skip.
+    if (!p.jp || !p.jp.length) {
+      container.innerHTML = `
+        <div class="pk-loading">
+          Datos incompletos para #${currentId}.<br>
+          <small>Recarga la Pokédex en ajustes (Cargar datos).</small>
+          <button id="skip">Saltar a siguiente</button>
+        </div>`;
+      container.querySelector('#skip').onclick = () => next();
+      return;
+    }
+
+    const answerTokens = tokenize(p.jp);
     const distractors = generateDistractors(answerTokens, DISTRACTOR_COUNT);
     const pool = shuffle([...answerTokens, ...distractors]).map((t, i) => ({
       rid: 'r' + i,

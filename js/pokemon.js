@@ -7,7 +7,7 @@ const TOTAL = 151;
 const SPECIES_URL = (id) => `https://pokeapi.co/api/v2/pokemon-species/${id}`;
 const SPRITE_URL = (id) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
 
-const CACHE_KEY = 'kana_pwa_pokemon_v1';
+const CACHE_KEY = 'kana_pwa_pokemon_v2';
 
 let cache = null;
 
@@ -35,11 +35,12 @@ export async function fetchOne(id) {
   if (!resp.ok) throw new Error('fetch failed for #' + id);
   const data = await resp.json();
   const findName = (lang) => (data.names.find(n => n.language.name === lang) || {}).name || '';
+  // PokeAPI language codes: 'ja-hrkt' (Japanese katakana/hiragana), 'ja-roma' (romanized), 'en' (English)
   const entry = {
     id,
-    jp: findName('ja-Hrkt'),
+    jp: findName('ja-hrkt') || findName('ja'),
     en: findName('en'),
-    romaji: findName('roomaji'),
+    romaji: findName('ja-roma') || findName('roomaji'),
     sprite: SPRITE_URL(id),
   };
   c[id] = entry;
