@@ -1,4 +1,4 @@
-const CACHE = 'kana-pwa-v3';
+const CACHE = 'kana-pwa-v4';
 const POKE_CACHE = 'kana-pwa-poke-v1';
 
 const ASSETS = [

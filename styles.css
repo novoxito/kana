@@ -490,6 +490,22 @@ body {
 .settings-tabs.sub .tab { padding: 8px; font-size: 13px; }
 .tier-tabs .tab { font-size: 12px; }
 
+.settings-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.app-version {
+  color: var(--fg-dim);
+  font-size: 11px;
+  font-family: ui-monospace, monospace;
+  letter-spacing: 0.5px;
+}
+
 /* POKÉDEX GRID (settings) */
 .pk-progress { margin-bottom: 12px; }
 .pk-progress small { color: var(--fg-dim); font-size: 12px; }

@@ -304,12 +304,42 @@ document.getElementById('pk-reset').addEventListener('click', () => {
   }
 });
 
+// --- Force refresh handler (clears SW cache, keeps localStorage) ---
+document.getElementById('force-refresh').addEventListener('click', async () => {
+  const btn = document.getElementById('force-refresh');
+  btn.disabled = true;
+  btn.textContent = 'Actualizando…';
+  try {
+    // Unregister all service workers
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const r of regs) await r.unregister();
+    }
+    // Clear app caches (preserve Pokémon cache to avoid re-downloading 151 sprites)
+    if ('caches' in window) {
+      const keys = await caches.keys();
+      await Promise.all(
+        keys.filter(k => !k.includes('poke')).map(k => caches.delete(k))
+      );
+    }
+  } catch {}
+  // Hard reload, bypass HTTP cache via query string
+  const url = new URL(location.href);
+  url.searchParams.set('_v', Date.now().toString());
+  location.replace(url.toString());
+});
+
 // --- Init ---
 show('home', 'Kana');
 
 // --- Register SW ---
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
+    navigator.serviceWorker.register('./sw.js').then(reg => {
+      // Check for updates whenever the app becomes visible
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') reg.update().catch(() => {});
+      });
+    }).catch(() => {});
   });
 }
