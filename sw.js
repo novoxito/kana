@@ -1,4 +1,4 @@
-const CACHE = 'kana-pwa-v2';
+const CACHE = 'kana-pwa-v3';
 const POKE_CACHE = 'kana-pwa-poke-v1';
 
 const ASSETS = [
@@ -39,11 +39,15 @@ self.addEventListener('activate', (e) => {
   );
 });
 
+self.addEventListener('message', (e) => {
+  if (e.data === 'SKIP_WAITING') self.skipWaiting();
+});
+
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
 
-  // Cross-origin Pokémon assets: cache-first, fall back to network
+  // Cross-origin Pokémon assets: cache-first
   if (POKE_HOSTS.has(url.hostname)) {
     e.respondWith(
       caches.open(POKE_CACHE).then(cache =>
@@ -59,7 +63,25 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // Same-origin: cache-first
+  // HTML navigations and the root: network-first (so updates land quickly)
+  const isHTML = e.request.mode === 'navigate'
+    || url.pathname.endsWith('.html')
+    || url.pathname === '/' || url.pathname.endsWith('/kana/');
+
+  if (isHTML) {
+    e.respondWith(
+      fetch(e.request).then(resp => {
+        if (resp.ok) {
+          const copy = resp.clone();
+          caches.open(CACHE).then(c => c.put(e.request, copy));
+        }
+        return resp;
+      }).catch(() => caches.match(e.request).then(c => c || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  // Other same-origin assets: cache-first with network fallback
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
