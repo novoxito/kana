@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kana">
+<meta name="theme-color" content="#1a1a2e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="stylesheet" href="styles.css">
+<title>Kana</title>
+</head>
+<body>
+
+<header id="topbar">
+  <button id="back-btn" class="icon-btn" hidden>←</button>
+  <h1 id="title">Kana</h1>
+  <button id="settings-btn" class="icon-btn">⚙</button>
+</header>
+
+<main id="app">
+
+  <section id="view-home" class="view active">
+    <div class="home-stats">
+      <div class="stat"><span id="stat-active">0</span><small>activos</small></div>
+      <div class="stat"><span id="stat-due">0</span><small>para repasar</small></div>
+      <div class="stat"><span id="stat-learned">0</span><small>aprendidos</small></div>
+    </div>
+    <div class="mode-grid">
+      <button class="mode-card" data-mode="flashcard">
+        <span class="mode-icon">🃏</span>
+        <span class="mode-name">Flashcards</span>
+        <span class="mode-desc">Repetición espaciada</span>
+      </button>
+      <button class="mode-card" data-mode="choice">
+        <span class="mode-icon">🎯</span>
+        <span class="mode-name">Opción múltiple</span>
+        <span class="mode-desc">Elige el romaji correcto</span>
+      </button>
+      <button class="mode-card" data-mode="typing">
+        <span class="mode-icon">⌨️</span>
+        <span class="mode-name">Escribir</span>
+        <span class="mode-desc">Teclea el romaji</span>
+      </button>
+      <button class="mode-card" data-mode="drawing">
+        <span class="mode-icon">✏️</span>
+        <span class="mode-name">Trazado</span>
+        <span class="mode-desc">Práctica de escritura</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="view-settings" class="view">
+    <div class="settings-tabs">
+      <button class="tab active" data-script="hiragana">ひらがな</button>
+      <button class="tab" data-script="katakana">カタカナ</button>
+    </div>
+    <div class="settings-actions">
+      <button id="select-all" class="ghost-btn">Todos</button>
+      <button id="select-none" class="ghost-btn">Ninguno</button>
+      <button id="reset-progress" class="ghost-btn danger">Reiniciar progreso</button>
+    </div>
+    <div id="kana-grid"></div>
+  </section>
+
+  <section id="view-mode" class="view">
+    <div id="mode-container"></div>
+  </section>
+
+</main>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "Kana - Hiragana & Katakana",
+  "short_name": "Kana",
+  "description": "Aprende hiragana y katakana con ejercicios personalizados",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
