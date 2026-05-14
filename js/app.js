@@ -36,8 +36,8 @@ function show(view, title) {
 function refreshHome() {
   const s = Store.getStats();
   document.getElementById('stat-active').textContent = s.active;
-  document.getElementById('stat-due').textContent = s.due;
-  document.getElementById('stat-learned').textContent = s.learned;
+  document.getElementById('stat-attempts').textContent = s.attempts;
+  document.getElementById('stat-accuracy').textContent = s.accuracy + '%';
 
   document.querySelectorAll('.mode-card[data-mode]').forEach(b => {
     const mode = b.dataset.mode;

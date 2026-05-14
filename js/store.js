@@ -68,15 +68,20 @@ export function resetProgress() {
 
 export function getStats() {
   const active = Object.keys(state.active);
-  const now = Date.now();
-  let due = 0, learned = 0;
+  let totalAttempts = 0;
+  let totalCorrect = 0;
   for (const id of active) {
     const p = state.progress[id];
-    if (!p || p.reps === 0) { due++; continue; }
-    if (p.due <= now) due++;
-    if (p.reps >= 2 && p.interval >= 3) learned++;
+    if (!p) continue;
+    totalAttempts += p.total || 0;
+    totalCorrect += p.correct || 0;
   }
-  return { active: active.length, due, learned };
+  const accuracy = totalAttempts > 0 ? Math.round(totalCorrect / totalAttempts * 100) : 0;
+  return {
+    active: active.length,
+    attempts: totalAttempts,
+    accuracy,
+  };
 }
 
 // === Pokémon selection ===
