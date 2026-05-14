@@ -598,59 +598,152 @@ body {
 }
 .pk-cell.locked .pk-jp-mini { color: var(--fg-dim); }
 
-/* POKÉDEX MODE CARD */
-.pk-card {
+/* POKÉDEX MODE — word builder (Duolingo-style) */
+.pkb-stage {
   padding: 16px 16px 24px;
   text-align: center;
 }
-.pk-card > .pk-num { display: block; margin-bottom: 8px; }
-.pk-card > .pk-sprite { display: block; margin: 0 auto 8px; }
-.pk-card > .pk-tap-area { margin-bottom: 32px; }
+.pkb-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
 .pk-num {
-  font-size: 14px;
+  font-size: 12px;
   color: var(--fg-dim);
   letter-spacing: 2px;
 }
-.pk-sprite {
-  width: 192px;
-  height: 192px;
+.pkb-sprite {
+  width: 160px;
+  height: 160px;
   image-rendering: pixelated;
   object-fit: contain;
   background: radial-gradient(circle at center, rgba(129, 140, 248, 0.15), transparent 70%);
 }
-.pk-tap-area {
-  padding: 4px;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: background 0.15s;
-  text-align: center;
-}
-.pk-tap-area:active { background: var(--bg-2); }
-.pk-jp {
-  font-size: 44px;
-  font-weight: 500;
-  letter-spacing: 2px;
-  text-align: center;
-  line-height: 1.1;
-  display: block;
-  margin-bottom: 32px;
-}
-.pk-tok-special { color: var(--accent-2); }
-.pk-answer-line {
-  display: block;
-  min-height: 56px;
-  text-align: center;
-}
-.pk-answer-line > * { display: block; }
-.pk-romaji {
-  font-size: 26px;
-  color: var(--accent);
-  font-weight: 500;
-}
-.pk-en {
-  font-size: 16px;
-  color: var(--fg-dim);
+
+.pkb-feedback {
+  font-size: 14px;
+  margin: 10px 0 18px;
   text-transform: capitalize;
+  min-height: 20px;
+  font-weight: 500;
+}
+.pkb-feedback.hint { color: var(--fg-dim); }
+.pkb-feedback.ok { color: var(--success); font-size: 18px; }
+.pkb-feedback.bad { color: var(--danger); }
+
+.pkb-slots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 24px;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--border);
+  min-height: 70px;
+}
+.pkb-slot {
+  font: inherit;
+  cursor: pointer;
+  min-width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--fg);
+  font-size: 22px;
+  font-weight: 500;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.pkb-slot.empty {
+  background: transparent;
+  border-style: dashed;
+  border-color: rgba(129, 140, 248, 0.25);
+  pointer-events: none;
+}
+.pkb-slot.filled {
+  background: var(--bg-3);
+  border-color: var(--accent);
+}
+.pkb-slot.correct {
+  background: rgba(52, 211, 153, 0.15);
+  border-color: var(--success);
+  color: var(--success);
+}
+.pkb-slot.wrong {
+  background: rgba(248, 113, 113, 0.15);
+  border-color: var(--danger);
+  color: var(--danger);
+  animation: pkb-shake 0.4s;
+}
+@keyframes pkb-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.pkb-pool {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  margin-bottom: 24px;
+}
+.pkb-tok {
+  font: inherit;
+  cursor: pointer;
+  min-width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--bg-3) 0%, var(--bg-2) 100%);
+  color: var(--fg);
+  font-size: 24px;
+  font-weight: 500;
+  padding: 0 12px;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.04) inset;
+  transition: transform 0.1s, opacity 0.2s;
+}
+.pkb-tok:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 0 0 rgba(0,0,0,0.3); }
+.pkb-tok.used {
+  opacity: 0.2;
+  cursor: default;
+  box-shadow: none;
+}
+
+.pkb-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+}
+.pkb-btn {
+  font: inherit;
+  cursor: pointer;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+}
+.pkb-btn.primary {
+  background: var(--accent);
+  color: #fff;
+  flex: 1;
+  max-width: 320px;
+}
+.pkb-btn.primary:active { background: var(--accent-2); }
+.pkb-btn.secondary {
+  background: var(--bg-2);
+  color: var(--fg);
+  border: 1px solid var(--border);
 }
 .pk-loading {
   padding: 60px 20px;
