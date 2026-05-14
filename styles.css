@@ -449,3 +449,181 @@ body {
   pointer-events: none;
 }
 .toast.shown { opacity: 1; }
+
+/* SECTION BLOCKS (home) */
+.section-block { margin-bottom: 32px; }
+.section-title {
+  margin: 8px 0 16px;
+  font-size: 14px;
+  color: var(--fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+.mode-card.wide {
+  grid-column: span 2;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 14px;
+  padding: 18px 20px;
+  text-align: left;
+}
+.mode-card.wide .mode-icon { font-size: 36px; }
+.mode-card.wide .mode-name,
+.mode-card.wide .mode-desc { text-align: left; }
+.mode-card.wide > span:not(.mode-icon) { align-self: flex-start; }
+.mode-card.wide {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 14px;
+  row-gap: 2px;
+  align-items: center;
+}
+.mode-card.wide .mode-icon { grid-row: span 2; }
+
+/* SETTINGS PANES */
+.settings-pane { display: none; }
+.settings-pane.active { display: block; }
+.settings-tabs.sub {
+  margin-top: 6px;
+  margin-bottom: 10px;
+}
+.settings-tabs.sub .tab { padding: 8px; font-size: 13px; }
+.tier-tabs .tab { font-size: 12px; }
+
+/* POKÉDEX GRID (settings) */
+.pk-progress { margin-bottom: 12px; }
+.pk-progress small { color: var(--fg-dim); font-size: 12px; }
+
+#pk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.pk-cell {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px 4px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+.pk-cell.active {
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.25), rgba(168, 85, 247, 0.25));
+  border-color: var(--accent);
+}
+.pk-cell.locked {
+  opacity: 0.45;
+}
+.pk-cell img {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+.pk-cell .pk-num-mini {
+  font-size: 10px;
+  color: var(--fg-dim);
+  position: absolute;
+  top: 4px;
+  right: 6px;
+}
+.pk-cell .pk-jp-mini {
+  font-size: 11px;
+  color: var(--fg);
+  margin-top: 2px;
+  text-align: center;
+  line-height: 1.1;
+}
+.pk-cell.locked .pk-jp-mini { color: var(--fg-dim); }
+
+/* POKÉDEX MODE CARD */
+.pk-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 16px;
+  gap: 12px;
+  min-height: calc(100vh - 120px);
+}
+.pk-num {
+  font-size: 14px;
+  color: var(--fg-dim);
+  letter-spacing: 2px;
+}
+.pk-sprite {
+  width: 192px;
+  height: 192px;
+  image-rendering: pixelated;
+  object-fit: contain;
+  background: radial-gradient(circle at center, rgba(129, 140, 248, 0.15), transparent 70%);
+}
+.pk-jp {
+  font-size: 48px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 1.1;
+}
+.pk-tok-special {
+  color: var(--accent-2);
+}
+.pk-reveal {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.pk-romaji {
+  font-size: 28px;
+  color: var(--accent);
+  font-weight: 500;
+}
+.pk-en {
+  font-size: 18px;
+  color: var(--fg-dim);
+  text-transform: capitalize;
+}
+.pk-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin-top: auto;
+  padding-top: 16px;
+}
+.pk-btn {
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+}
+.pk-btn.again { background: var(--danger); }
+.pk-btn.good { background: var(--success); }
+.pk-loading {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--fg-dim);
+}
+.pk-loading button {
+  display: block;
+  margin: 16px auto 0;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+

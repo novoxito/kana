@@ -1,8 +1,10 @@
 const KEY = 'kana_pwa_state_v1';
 
 const DEFAULT_STATE = {
-  active: {},       // { kanaId: true }
-  progress: {},     // { kanaId: { ease, interval, reps, due, lapses, correct, total } }
+  active: {},          // { kanaId: true } - activated kana for kana exercises
+  progress: {},        // { kanaId: { ease, interval, reps, due, lapses, correct, total } }
+  activePokemon: {},   // { pokemonId: true } - activated Pokémon for Pokémon mode
+  pokemonProgress: {}, // { pokemonId: { correct, total, lastSeen } }
 };
 
 let state = load();
@@ -22,9 +24,8 @@ function persist() {
   localStorage.setItem(KEY, JSON.stringify(state));
 }
 
-export function isActive(id) {
-  return !!state.active[id];
-}
+// === Kana selection ===
+export function isActive(id) { return !!state.active[id]; }
 
 export function setActive(id, on) {
   if (on) state.active[id] = true;
@@ -40,10 +41,10 @@ export function setActiveMany(ids, on) {
   persist();
 }
 
-export function activeIds() {
-  return Object.keys(state.active);
-}
+export function activeIds() { return Object.keys(state.active); }
+export function activeIdSet() { return new Set(Object.keys(state.active)); }
 
+// === Kana progress (SRS) ===
 export function getProgress(id) {
   return state.progress[id] || { ease: 2.5, interval: 0, reps: 0, due: 0, lapses: 0, correct: 0, total: 0 };
 }
@@ -65,10 +66,6 @@ export function resetProgress() {
   persist();
 }
 
-export function exportState() {
-  return JSON.stringify(state, null, 2);
-}
-
 export function getStats() {
   const active = Object.keys(state.active);
   const now = Date.now();
@@ -80,4 +77,48 @@ export function getStats() {
     if (p.reps >= 2 && p.interval >= 3) learned++;
   }
   return { active: active.length, due, learned };
+}
+
+// === Pokémon selection ===
+export function isPokemonActive(id) { return !!state.activePokemon[id]; }
+
+export function setPokemonActive(id, on) {
+  if (on) state.activePokemon[id] = true;
+  else delete state.activePokemon[id];
+  persist();
+}
+
+export function setPokemonActiveMany(ids, on) {
+  for (const id of ids) {
+    if (on) state.activePokemon[id] = true;
+    else delete state.activePokemon[id];
+  }
+  persist();
+}
+
+export function activePokemonIds() {
+  return Object.keys(state.activePokemon).map(Number);
+}
+
+// === Pokémon progress ===
+export function recordPokemonAttempt(id, correct) {
+  const p = state.pokemonProgress[id] || { correct: 0, total: 0, lastSeen: 0 };
+  p.total++;
+  if (correct) p.correct++;
+  p.lastSeen = Date.now();
+  state.pokemonProgress[id] = p;
+  persist();
+}
+
+export function getPokemonProgress(id) {
+  return state.pokemonProgress[id] || { correct: 0, total: 0, lastSeen: 0 };
+}
+
+export function getPokedexStats() {
+  return { active: Object.keys(state.activePokemon).length };
+}
+
+export function resetPokemonProgress() {
+  state.pokemonProgress = {};
+  persist();
 }

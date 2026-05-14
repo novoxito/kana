@@ -24,46 +24,94 @@
 <main id="app">
 
   <section id="view-home" class="view active">
-    <div class="home-stats">
-      <div class="stat"><span id="stat-active">0</span><small>activos</small></div>
-      <div class="stat"><span id="stat-due">0</span><small>para repasar</small></div>
-      <div class="stat"><span id="stat-learned">0</span><small>aprendidos</small></div>
+
+    <div class="section-block">
+      <h2 class="section-title">Aprende Kana</h2>
+      <div class="home-stats">
+        <div class="stat"><span id="stat-active">0</span><small>activos</small></div>
+        <div class="stat"><span id="stat-due">0</span><small>para repasar</small></div>
+        <div class="stat"><span id="stat-learned">0</span><small>aprendidos</small></div>
+      </div>
+      <div class="mode-grid">
+        <button class="mode-card" data-mode="flashcard">
+          <span class="mode-icon">🃏</span>
+          <span class="mode-name">Flashcards</span>
+          <span class="mode-desc">Repetición espaciada</span>
+        </button>
+        <button class="mode-card" data-mode="choice">
+          <span class="mode-icon">🎯</span>
+          <span class="mode-name">Opción múltiple</span>
+          <span class="mode-desc">Elige el romaji</span>
+        </button>
+        <button class="mode-card" data-mode="typing">
+          <span class="mode-icon">⌨️</span>
+          <span class="mode-name">Escribir</span>
+          <span class="mode-desc">Teclea el romaji</span>
+        </button>
+        <button class="mode-card" data-mode="drawing">
+          <span class="mode-icon">✏️</span>
+          <span class="mode-name">Trazado</span>
+          <span class="mode-desc">Práctica visual</span>
+        </button>
+      </div>
     </div>
-    <div class="mode-grid">
-      <button class="mode-card" data-mode="flashcard">
-        <span class="mode-icon">🃏</span>
-        <span class="mode-name">Flashcards</span>
-        <span class="mode-desc">Repetición espaciada</span>
-      </button>
-      <button class="mode-card" data-mode="choice">
-        <span class="mode-icon">🎯</span>
-        <span class="mode-name">Opción múltiple</span>
-        <span class="mode-desc">Elige el romaji correcto</span>
-      </button>
-      <button class="mode-card" data-mode="typing">
-        <span class="mode-icon">⌨️</span>
-        <span class="mode-name">Escribir</span>
-        <span class="mode-desc">Teclea el romaji</span>
-      </button>
-      <button class="mode-card" data-mode="drawing">
-        <span class="mode-icon">✏️</span>
-        <span class="mode-name">Trazado</span>
-        <span class="mode-desc">Práctica de escritura</span>
-      </button>
+
+    <div class="section-block">
+      <h2 class="section-title">Pokédex</h2>
+      <div class="home-stats">
+        <div class="stat"><span id="stat-pk-active">0</span><small>activos</small></div>
+        <div class="stat"><span id="stat-pk-readable">0</span><small>legibles</small></div>
+        <div class="stat"><span id="stat-pk-total">151</span><small>total</small></div>
+      </div>
+      <div class="mode-grid">
+        <button class="mode-card wide" data-mode="pokedex">
+          <span class="mode-icon">📖</span>
+          <span class="mode-name">Pokédex</span>
+          <span class="mode-desc">Lee nombres en katakana</span>
+        </button>
+      </div>
     </div>
+
   </section>
 
   <section id="view-settings" class="view">
     <div class="settings-tabs">
-      <button class="tab active" data-script="hiragana">ひらがな</button>
-      <button class="tab" data-script="katakana">カタカナ</button>
+      <button class="tab active" data-section="kana">Kana</button>
+      <button class="tab" data-section="pokemon">Pokédex</button>
     </div>
-    <div class="settings-actions">
-      <button id="select-all" class="ghost-btn">Todos</button>
-      <button id="select-none" class="ghost-btn">Ninguno</button>
-      <button id="reset-progress" class="ghost-btn danger">Reiniciar progreso</button>
+
+    <div id="settings-kana" class="settings-pane active">
+      <div class="settings-tabs sub">
+        <button class="tab active" data-script="hiragana">ひらがな</button>
+        <button class="tab" data-script="katakana">カタカナ</button>
+      </div>
+      <div class="settings-tabs sub tier-tabs">
+        <button class="tab active" data-tier="basic">Básico</button>
+        <button class="tab" data-tier="dakuten">Dakuten</button>
+        <button class="tab" data-tier="yoon">Yōon</button>
+      </div>
+      <div class="settings-actions">
+        <button id="select-all" class="ghost-btn">Todos (tier)</button>
+        <button id="select-none" class="ghost-btn">Ninguno (tier)</button>
+        <button id="reset-progress" class="ghost-btn danger">Reset progreso</button>
+      </div>
+      <div id="kana-grid"></div>
     </div>
-    <div id="kana-grid"></div>
+
+    <div id="settings-pokemon" class="settings-pane">
+      <div class="settings-actions">
+        <button id="pk-fetch" class="ghost-btn">Cargar datos</button>
+        <button id="pk-active-readable" class="ghost-btn">Activar legibles</button>
+        <button id="pk-active-all" class="ghost-btn">Activar todos</button>
+        <button id="pk-active-none" class="ghost-btn">Ninguno</button>
+        <button id="pk-reset" class="ghost-btn danger">Reset progreso</button>
+      </div>
+      <div id="pk-progress" class="pk-progress" hidden>
+        <div class="progress"><div id="pk-progress-bar"></div></div>
+        <small id="pk-progress-label"></small>
+      </div>
+      <div id="pk-grid"></div>
+    </div>
   </section>
 
   <section id="view-mode" class="view">

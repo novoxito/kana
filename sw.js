@@ -1,4 +1,6 @@
-const CACHE = 'kana-pwa-v1';
+const CACHE = 'kana-pwa-v2';
+const POKE_CACHE = 'kana-pwa-poke-v1';
+
 const ASSETS = [
   './',
   './index.html',
@@ -10,11 +12,18 @@ const ASSETS = [
   './js/store.js',
   './js/srs.js',
   './js/ui.js',
+  './js/pokemon.js',
   './js/mode-flashcard.js',
   './js/mode-choice.js',
   './js/mode-typing.js',
   './js/mode-drawing.js',
+  './js/mode-pokedex.js',
 ];
+
+const POKE_HOSTS = new Set([
+  'pokeapi.co',
+  'raw.githubusercontent.com',
+]);
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
@@ -23,18 +32,39 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      Promise.all(keys
+        .filter(k => k !== CACHE && k !== POKE_CACHE)
+        .map(k => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+
+  // Cross-origin Pokémon assets: cache-first, fall back to network
+  if (POKE_HOSTS.has(url.hostname)) {
+    e.respondWith(
+      caches.open(POKE_CACHE).then(cache =>
+        cache.match(e.request).then(hit => {
+          if (hit) return hit;
+          return fetch(e.request).then(resp => {
+            if (resp && resp.ok) cache.put(e.request, resp.clone());
+            return resp;
+          }).catch(() => hit);
+        })
+      )
+    );
+    return;
+  }
+
+  // Same-origin: cache-first
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
       return fetch(e.request).then(resp => {
-        if (resp.ok && new URL(e.request.url).origin === location.origin) {
+        if (resp.ok && url.origin === location.origin) {
           const copy = resp.clone();
           caches.open(CACHE).then(c => c.put(e.request, copy));
         }
