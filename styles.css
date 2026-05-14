@@ -217,9 +217,7 @@ body {
 
 /* MODE VIEW */
 #mode-container {
-  min-height: calc(100vh - 100px);
-  display: flex;
-  flex-direction: column;
+  display: block;
 }
 
 .empty-state {
@@ -241,19 +239,13 @@ body {
 
 /* FLASHCARD */
 .fc-card {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
   padding: 20px 16px 24px;
 }
 .fc-tap-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 4px;
+  text-align: center;
+  padding: 8px;
   border-radius: 16px;
+  cursor: pointer;
   transition: background 0.15s;
   margin-bottom: 32px;
 }
@@ -263,6 +255,7 @@ body {
   font-weight: 400;
   line-height: 1;
   margin-bottom: 32px;
+  display: block;
 }
 .fc-answer-line {
   font-size: 44px;
@@ -270,6 +263,7 @@ body {
   min-height: 56px;
   text-align: center;
   font-weight: 500;
+  display: block;
 }
 .fc-hint {
   font-size: 14px;
@@ -352,7 +346,6 @@ body {
 
 /* DRAWING */
 .dr-stage {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -554,14 +547,11 @@ body {
 
 /* POKÉDEX MODE CARD */
 .pk-card {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
   padding: 16px 16px 24px;
-  gap: 8px;
+  text-align: center;
 }
-.pk-card > .pk-num,
-.pk-card > .pk-sprite { align-self: center; }
+.pk-card > .pk-num { display: block; margin-bottom: 8px; }
+.pk-card > .pk-sprite { display: block; margin: 0 auto 8px; }
 .pk-card > .pk-tap-area { margin-bottom: 32px; }
 .pk-num {
   font-size: 14px;
@@ -576,15 +566,11 @@ body {
   background: radial-gradient(circle at center, rgba(129, 140, 248, 0.15), transparent 70%);
 }
 .pk-tap-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 32px;
   padding: 4px;
   border-radius: 16px;
   cursor: pointer;
-  width: 100%;
   transition: background 0.15s;
+  text-align: center;
 }
 .pk-tap-area:active { background: var(--bg-2); }
 .pk-jp {
@@ -593,16 +579,16 @@ body {
   letter-spacing: 2px;
   text-align: center;
   line-height: 1.1;
+  display: block;
+  margin-bottom: 32px;
 }
 .pk-tok-special { color: var(--accent-2); }
 .pk-answer-line {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  display: block;
   min-height: 56px;
-  justify-content: center;
+  text-align: center;
 }
+.pk-answer-line > * { display: block; }
 .pk-romaji {
   font-size: 26px;
   color: var(--accent);
