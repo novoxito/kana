@@ -1,4 +1,4 @@
-const CACHE = 'kana-pwa-v10';
+const CACHE = 'kana-pwa-v11';
 const POKE_CACHE = 'kana-pwa-poke-v2';
 
 const ASSETS = [
@@ -13,11 +13,13 @@ const ASSETS = [
   './js/srs.js',
   './js/ui.js',
   './js/pokemon.js',
+  './js/vocab.js',
   './js/mode-flashcard.js',
   './js/mode-choice.js',
   './js/mode-typing.js',
   './js/mode-drawing.js',
   './js/mode-pokedex.js',
+  './js/mode-vocab.js',
 ];
 
 const POKE_HOSTS = new Set([

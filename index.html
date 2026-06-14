@@ -72,12 +72,34 @@
       </div>
     </div>
 
+    <div class="section-block">
+      <h2 class="section-title">Vocabulario</h2>
+      <div class="home-stats">
+        <div class="stat"><span id="stat-vc-today">0/5</span><small>hoy</small></div>
+        <div class="stat"><span id="stat-vc-seen">0</span><small>vistas</small></div>
+        <div class="stat"><span id="stat-vc-learned">0</span><small>aprendidas</small></div>
+      </div>
+      <div class="mode-grid">
+        <button class="mode-card wide" data-mode="vocab-daily">
+          <span class="mode-icon">📅</span>
+          <span class="mode-name">Sesión de hoy</span>
+          <span class="mode-desc">5 nuevas + repaso</span>
+        </button>
+        <button class="mode-card" data-mode="vocab-practice">
+          <span class="mode-icon">🔄</span>
+          <span class="mode-name">Práctica libre</span>
+          <span class="mode-desc">Aleatorio</span>
+        </button>
+      </div>
+    </div>
+
   </section>
 
   <section id="view-settings" class="view">
     <div class="settings-tabs">
       <button class="tab active" data-section="kana">Kana</button>
       <button class="tab" data-section="pokemon">Pokédex</button>
+      <button class="tab" data-section="vocab">Vocab</button>
     </div>
 
     <div id="settings-kana" class="settings-pane active">
@@ -113,9 +135,19 @@
       <div id="pk-grid"></div>
     </div>
 
+    <div id="settings-vocab" class="settings-pane">
+      <p class="settings-note">Activa los temas que quieras estudiar. La sesión diaria saca 5 palabras nuevas de los temas activos.</p>
+      <div class="settings-actions">
+        <button id="vc-active-all" class="ghost-btn">Activar todos</button>
+        <button id="vc-active-none" class="ghost-btn">Ninguno</button>
+        <button id="vc-reset" class="ghost-btn danger">Reset progreso</button>
+      </div>
+      <div id="vc-themes-grid"></div>
+    </div>
+
     <div class="settings-footer">
       <button id="force-refresh" class="ghost-btn">↻ Actualizar app</button>
-      <small class="app-version" id="app-version">v10</small>
+      <small class="app-version" id="app-version">v11</small>
     </div>
   </section>
 

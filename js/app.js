@@ -1,11 +1,13 @@
 import { KANA, buildSettingsGrid, TIER_ORDER, TIERS } from './data.js';
 import * as Store from './store.js';
 import * as Pokemon from './pokemon.js';
+import { VOCAB, THEMES, THEME_ORDER, vocabByTheme } from './vocab.js';
 import { mount as mountFlashcard } from './mode-flashcard.js';
 import { mount as mountChoice } from './mode-choice.js';
 import { mount as mountTyping } from './mode-typing.js';
 import { mount as mountDrawing } from './mode-drawing.js';
 import { mount as mountPokedex } from './mode-pokedex.js';
+import { mount as mountVocab } from './mode-vocab.js';
 import { toast } from './ui.js';
 
 const views = {
@@ -43,6 +45,8 @@ function refreshHome() {
     const mode = b.dataset.mode;
     if (mode === 'pokedex') {
       b.disabled = Store.activePokemonIds().length === 0;
+    } else if (mode === 'vocab-daily' || mode === 'vocab-practice') {
+      b.disabled = Store.getActiveVocabThemes().length === 0;
     } else {
       b.disabled = s.active === 0;
     }
@@ -57,17 +61,24 @@ function refreshHome() {
     if (Pokemon.getById(i) && Pokemon.isReadable(i, activeKanaSet)) readable++;
   }
   document.getElementById('stat-pk-readable').textContent = readable;
+
+  // Vocab stats
+  const vcStats = Store.getVocabStats();
+  document.getElementById('stat-vc-today').textContent = `${vcStats.todayIntroduced}/5`;
+  document.getElementById('stat-vc-seen').textContent = vcStats.seen;
+  document.getElementById('stat-vc-learned').textContent = vcStats.learned;
 }
 
 // --- Mode launching ---
 document.querySelectorAll('.mode-card').forEach(card => {
   card.addEventListener('click', () => {
+    const mode = card.dataset.mode;
     if (card.disabled) {
-      const mode = card.dataset.mode;
-      toast(mode === 'pokedex' ? 'Activa Pokémon en ajustes' : 'Activa kana en ajustes');
+      if (mode === 'pokedex') toast('Activa Pokémon en ajustes');
+      else if (mode === 'vocab-daily' || mode === 'vocab-practice') toast('Activa temas de vocabulario en ajustes');
+      else toast('Activa kana en ajustes');
       return;
     }
-    const mode = card.dataset.mode;
     const container = document.getElementById('mode-container');
     container.innerHTML = '';
     const titles = {
@@ -76,16 +87,22 @@ document.querySelectorAll('.mode-card').forEach(card => {
       typing: 'Escribir',
       drawing: 'Trazado',
       pokedex: 'Pokédex',
+      'vocab-daily': 'Sesión de hoy',
+      'vocab-practice': 'Práctica libre',
     };
     show('mode', titles[mode]);
-    const fns = {
-      flashcard: mountFlashcard,
-      choice: mountChoice,
-      typing: mountTyping,
-      drawing: mountDrawing,
-      pokedex: mountPokedex,
-    };
-    fns[mode](container);
+    if (mode === 'vocab-daily') mountVocab(container, { mode: 'daily' });
+    else if (mode === 'vocab-practice') mountVocab(container, { mode: 'practice' });
+    else {
+      const fns = {
+        flashcard: mountFlashcard,
+        choice: mountChoice,
+        typing: mountTyping,
+        drawing: mountDrawing,
+        pokedex: mountPokedex,
+      };
+      fns[mode](container);
+    }
   });
 });
 
@@ -114,12 +131,11 @@ function renderSettings() {
   });
   document.getElementById('settings-kana').classList.toggle('active', currentSettingsSection === 'kana');
   document.getElementById('settings-pokemon').classList.toggle('active', currentSettingsSection === 'pokemon');
+  document.getElementById('settings-vocab').classList.toggle('active', currentSettingsSection === 'vocab');
 
-  if (currentSettingsSection === 'kana') {
-    renderKanaSettings();
-  } else {
-    renderPokemonSettings();
-  }
+  if (currentSettingsSection === 'kana') renderKanaSettings();
+  else if (currentSettingsSection === 'pokemon') renderPokemonSettings();
+  else renderVocabSettings();
 }
 
 // --- Kana settings ---
@@ -300,6 +316,48 @@ document.getElementById('pk-active-none').addEventListener('click', () => {
 document.getElementById('pk-reset').addEventListener('click', () => {
   if (confirm('¿Reiniciar el progreso de la Pokédex?')) {
     Store.resetPokemonProgress();
+    toast('Progreso reiniciado');
+  }
+});
+
+// --- Vocab settings ---
+function renderVocabSettings() {
+  const grid = document.getElementById('vc-themes-grid');
+  grid.innerHTML = THEME_ORDER.map(key => {
+    const t = THEMES[key];
+    const count = vocabByTheme(key).length;
+    const active = Store.isVocabThemeActive(key);
+    return `
+      <button class="vc-theme-card ${active ? 'active' : ''}" data-theme="${key}">
+        <span class="vc-theme-emoji">${t.emoji}</span>
+        <span class="vc-theme-label">${t.label}</span>
+        <span class="vc-theme-count">${count} palabras</span>
+      </button>
+    `;
+  }).join('');
+  grid.querySelectorAll('.vc-theme-card').forEach(btn => {
+    btn.onclick = () => {
+      const key = btn.dataset.theme;
+      const willBe = !Store.isVocabThemeActive(key);
+      Store.setVocabThemeActive(key, willBe);
+      btn.classList.toggle('active', willBe);
+    };
+  });
+}
+
+document.getElementById('vc-active-all').addEventListener('click', () => {
+  for (const key of THEME_ORDER) Store.setVocabThemeActive(key, true);
+  renderVocabSettings();
+});
+
+document.getElementById('vc-active-none').addEventListener('click', () => {
+  for (const key of THEME_ORDER) Store.setVocabThemeActive(key, false);
+  renderVocabSettings();
+});
+
+document.getElementById('vc-reset').addEventListener('click', () => {
+  if (confirm('¿Reiniciar el progreso de vocabulario?')) {
+    Store.resetVocabProgress();
     toast('Progreso reiniciado');
   }
 });
